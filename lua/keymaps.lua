@@ -1,0 +1,38 @@
+local opts = { noremap = true, silent = true }
+-- Shorten function name
+local function keymap(mode,key,command,opt)
+  opt = (opt == nil and opts) or opt
+  return vim.api.nvim_set_keymap(mode,key,command,opt)
+end
+
+
+vim.g.mapleader = " "
+
+keymap("","<Space>","<Nop>")
+
+keymap("i","jj","<Esc>")
+keymap("i","jk","<Esc>")
+
+keymap("n","<C-n>",":NvimTreeToggle<CR>")
+
+local telescope = require('telescope.builtin')
+
+if(os.execute("git rev-parse &> /dev/null") == 0 ) then
+  vim.keymap.set("n","<leader><leader>",telescope.fd)
+else
+  keymap("n","<leader><leader>",":Files<CR>")
+end
+
+keymap("n","<leader>fr",":Rg<CR>")
+
+keymap("n", "<C-h>", "<C-w>h")
+keymap("n", "<C-j>", "<C-w>j")
+keymap("n", "<C-k>", "<C-w>k")
+keymap("n", "<C-l>", "<C-w>l")
+keymap("n", "<leader>wq", "<C-w>q")
+
+keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+
