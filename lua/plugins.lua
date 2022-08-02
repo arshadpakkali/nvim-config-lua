@@ -46,6 +46,13 @@ return packer.startup(function(use)
 	use "tpope/vim-surround"
 	use "tpope/vim-commentary"
 	use {
+		'nvim-lualine/lualine.nvim',
+		requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+		config = function()
+			require 'lualine'.setup {}
+		end
+	}
+	use {
 		'lewis6991/gitsigns.nvim',
 		config = function()
 			require 'gitsigns'.setup()
@@ -109,7 +116,19 @@ return packer.startup(function(use)
 	}
 	use {
 		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate"
+		run = ":TSUpdate",
+		config = function()
+			require "nvim-treesitter.configs".setup {
+				ensure_installed = { "c", "lua", "typescript", "javascript", "go" },
+				sync_install = false,
+				auto_install = true,
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = false,
+				},
+
+			}
+		end
 	}
 
 
@@ -118,6 +137,11 @@ return packer.startup(function(use)
 			require "mason".setup()
 		end
 	}
+
+	use { 'mfussenegger/nvim-dap', config = function()
+
+
+	end }
 
 
 	if PACKER_BOOTSTRAP then
