@@ -45,6 +45,7 @@ return packer.startup(function(use)
 	use "unblevable/quick-scope"
 	use "tpope/vim-surround"
 	use "tpope/vim-commentary"
+	use "tpope/vim-fugitive"
 	use {
 		'nvim-lualine/lualine.nvim',
 		requires = { 'kyazdani42/nvim-web-devicons', opt = true },
@@ -65,12 +66,27 @@ return packer.startup(function(use)
 	use {
 		"folke/which-key.nvim",
 		config = function()
-			require "which-key".setup()
+			require "whichkey-conf"
 		end
 	}
 	use {
 		'nvim-telescope/telescope.nvim', tag = '0.1.0',
-		requires = { { 'nvim-lua/plenary.nvim' } }
+		requires = { { 'nvim-lua/plenary.nvim' } },
+		config = function()
+			local telescopeActions = require 'telescope.actions'
+
+			require 'telescope'.setup {
+				defaults = {
+					mappings = {
+						i = {
+							["<Esc>"] = telescopeActions.close,
+							["<C-u>"] = false
+						}
+					}
+				}
+			}
+
+		end
 	}
 
 	use {
@@ -107,13 +123,26 @@ return packer.startup(function(use)
 
 	use {
 		'neovim/nvim-lspconfig',
-		requires = { "hrsh7th/nvim-cmp", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-vsnip", 'hrsh7th/vim-vsnip',
+		requires = {
+			'hrsh7th/nvim-cmp',
+			'hrsh7th/cmp-nvim-lsp',
+			'L3MON4D3/LuaSnip',
+			'saadparwaiz1/cmp_luasnip',
 			"b0o/schemastore.nvim"
+
 		},
 		config = function()
 			require("lsp")
+			require("lsp_servers")
 		end
 	}
+	use {
+		'j-hui/fidget.nvim',
+		config = function()
+			require 'fidget'.setup {}
+		end
+	}
+
 	use {
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
@@ -138,11 +167,16 @@ return packer.startup(function(use)
 		end
 	}
 
-	use { 'mfussenegger/nvim-dap', config = function()
+	use {
+		"puremourning/vimspector"
+	}
 
-
-	end }
-
+	-- use {
+	-- 	"onsails/lspkind.nvim",
+	-- 	config = function()
+	-- 		require 'lspkind'.init()
+	-- 	end
+	-- }
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
