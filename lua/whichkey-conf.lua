@@ -83,16 +83,13 @@ local noremap_mappings = {
 	["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
 	["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
 
-
 	["b"] = {
 		name = "Buffer",
 		b = {
 			"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-			"Buffers"
+			"Buffers",
 		},
 		c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-
-
 	},
 	p = {
 		name = "Packer",
@@ -169,7 +166,6 @@ local noremap_mappings = {
 		k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
 		C = { "<cmd>Telescope commands<cr>", "Commands" },
 	},
-
 }
 
 local remap_opts = {
@@ -192,10 +188,10 @@ local remap_mappings = {
 		k = { ":call vimspector#StepInto()<CR>" },
 		l = { ":call vimspector#StepOver()<CR>" },
 		b = { ":call vimspector#ToggleBreakpoint()<CR>", "Toggle Breakpoint" },
-		['.'] = { ":call vimspector#RunToCursor()<CR>", "Run To Cursor" },
-		['x'] = { ":call vimspector#ClearBreakpoints()<CR>", "clear all Breakpoints" },
-		i = { "<Plug>VimspectorBalloonEval", "Inspect" }
-	}
+		["."] = { ":call vimspector#RunToCursor()<CR>", "Run To Cursor" },
+		["x"] = { ":call vimspector#ClearBreakpoints()<CR>", "clear all Breakpoints" },
+		i = { "<Plug>VimspectorBalloonEval", "Inspect" },
+	},
 }
 
 which_key.setup(setup)

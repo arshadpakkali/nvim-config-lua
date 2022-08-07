@@ -14,9 +14,9 @@ keymap("i", "jk", "<Esc>")
 
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>")
 
-local telescope = require('telescope.builtin')
+local telescope = require("telescope.builtin")
 
-if (os.execute("git rev-parse &> /dev/null") == 0) then
+if os.execute("git rev-parse &> /dev/null") == 0 then
 	vim.keymap.set("n", "<leader><leader>", telescope.fd)
 else
 	keymap("n", "<leader><leader>", ":Files<CR>")
@@ -35,7 +35,6 @@ keymap("n", "<C-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
-
 -- keymap("n", "<leader>dd", ":call vimspector#Launch()<CR>")
 -- keymap("n", "<leader>dq", ":call vimspector#Reset()<CR>")
 -- keymap("n", "<leader>dr", ":call vimspector#Restart()<CR>")
@@ -47,8 +46,6 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 -- keymap("n", "<leader>d.", ":call vimspector#RunToCursor()<CR>")
 -- keymap("n", "<leader>dx", ":call vimspector#ClearBreakpoints()<CR>")
 -- keymap("n", "<leader>di", "<Plug>VimspectorBalloonEval")
-
-
 
 keymap("n", "<leader>rr", ":source /home/arshad/.config/nvim/init.lua<CR>")
 
