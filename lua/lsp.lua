@@ -42,9 +42,9 @@ cmp.setup({
 local on_attach = function(client, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
+	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
 	vim.keymap.set("n", "<A-k>", vim.lsp.buf.signature_help, bufopts)
@@ -67,8 +67,11 @@ local on_attach = function(client, bufnr)
 
 	require("lsp_signature").on_attach({}, bufnr)
 
-	if client.name == "tsserver" or client.name == "sumneko_lua" then
-		client.resolved_capabilities.document_formatting = false
+	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls" }
+	for _, v in ipairs(ls_wo_format) do
+		if v == client.name then
+			client.resolved_capabilities.document_formatting = false
+		end
 	end
 end
 

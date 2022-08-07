@@ -35,18 +35,4 @@ keymap("n", "<C-Down>", ":resize +2<CR>", opts)
 keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
--- keymap("n", "<leader>dd", ":call vimspector#Launch()<CR>")
--- keymap("n", "<leader>dq", ":call vimspector#Reset()<CR>")
--- keymap("n", "<leader>dr", ":call vimspector#Restart()<CR>")
--- keymap("n", "<leader>dc", ":call vimspector#Continue()<CR>")
--- keymap("n", "<leader>dj", ":call vimspector#StepOut()<CR>")
--- keymap("n", "<leader>dk", ":call vimspector#StepInto()<CR>")
--- keymap("n", "<leader>dl", ":call vimspector#StepOver()<CR>")
--- keymap("n", "<leader>db", ":call vimspector#ToggleBreakpoint()<CR>")
--- keymap("n", "<leader>d.", ":call vimspector#RunToCursor()<CR>")
--- keymap("n", "<leader>dx", ":call vimspector#ClearBreakpoints()<CR>")
--- keymap("n", "<leader>di", "<Plug>VimspectorBalloonEval")
-
-keymap("n", "<leader>rr", ":source /home/arshad/.config/nvim/init.lua<CR>")
-
 vim.cmd("let g:vimspector_base_dir=expand('$HOME/.config/vimspector-config')")
