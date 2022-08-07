@@ -43,9 +43,6 @@ return packer.startup(function(use)
 	use "lewis6991/impatient.nvim"
 	use "junegunn/fzf.vim"
 	use "unblevable/quick-scope"
-	use "tpope/vim-surround"
-	use "tpope/vim-commentary"
-	use "tpope/vim-fugitive"
 	use {
 		'nvim-lualine/lualine.nvim',
 		requires = { 'kyazdani42/nvim-web-devicons', opt = true },
@@ -60,32 +57,9 @@ return packer.startup(function(use)
 		end
 	}
 	use {
-		"windwp/nvim-autopairs",
-		config = function() require("nvim-autopairs").setup {} end
-	}
-	use {
 		"folke/which-key.nvim",
 		config = function()
 			require "whichkey-conf"
-		end
-	}
-	use {
-		'nvim-telescope/telescope.nvim', tag = '0.1.0',
-		requires = { { 'nvim-lua/plenary.nvim' } },
-		config = function()
-			local telescopeActions = require 'telescope.actions'
-
-			require 'telescope'.setup {
-				defaults = {
-					mappings = {
-						i = {
-							["<Esc>"] = telescopeActions.close,
-							["<C-u>"] = false
-						}
-					}
-				}
-			}
-
 		end
 	}
 
@@ -120,14 +94,17 @@ return packer.startup(function(use)
 			})
 		end,
 	}
-
+	use {
+		'L3MON4D3/LuaSnip',
+	}
 	use {
 		'neovim/nvim-lspconfig',
 		requires = {
 			'hrsh7th/nvim-cmp',
 			'hrsh7th/cmp-nvim-lsp',
-			'L3MON4D3/LuaSnip',
+			'hrsh7th/cmp-nvim-lua',
 			'saadparwaiz1/cmp_luasnip',
+			'ray-x/lsp_signature.nvim',
 			"b0o/schemastore.nvim"
 
 		},
@@ -143,6 +120,40 @@ return packer.startup(function(use)
 		end
 	}
 
+	use {
+		"onsails/lspkind.nvim",
+		config = function()
+			require 'lspkind'.init()
+		end
+	}
+
+	use {
+		'nvim-telescope/telescope.nvim', tag = '0.1.0',
+		requires = { { 'nvim-lua/plenary.nvim' } },
+		config = function()
+			local telescopeActions = require 'telescope.actions'
+
+			require 'telescope'.setup {
+				defaults = {
+					mappings = {
+						i = {
+							["<Esc>"] = telescopeActions.close,
+							["<C-u>"] = false
+						}
+					}
+				}
+			}
+
+		end
+	}
+
+	use "tpope/vim-surround"
+	use "tpope/vim-commentary"
+	use "tpope/vim-fugitive"
+	use {
+		"windwp/nvim-autopairs",
+		config = function() require("nvim-autopairs").setup {} end
+	}
 	use {
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
@@ -171,12 +182,6 @@ return packer.startup(function(use)
 		"puremourning/vimspector"
 	}
 
-	-- use {
-	-- 	"onsails/lspkind.nvim",
-	-- 	config = function()
-	-- 		require 'lspkind'.init()
-	-- 	end
-	-- }
 
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()

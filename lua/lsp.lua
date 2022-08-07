@@ -1,6 +1,8 @@
 local cmp = require('cmp')
 if cmp == nil then return end
 
+local lspkind = require 'lspkind'
+
 cmp.setup({
 	snippet = {
 		expand = function(args)
@@ -14,20 +16,29 @@ cmp.setup({
 	mapping = cmp.mapping.preset.insert({
 		['<C-b>'] = cmp.mapping.scroll_docs(-4),
 		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		['<C-Space>'] = cmp.mapping.complete(),
+		['<C-Space>'] = cmp.mapping.complete(), -- trigger completion
 		['<C-e>'] = cmp.mapping.abort(),
 		['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
 		{ name = 'nvim_lsp' },
 		{ name = 'luasnip' }, -- For luasnip users.
-	}, {
-	})
+	}),
+	formatting = {
+		format = lspkind.cmp_format({
+			mode = "symbol_text",
+			menu = ({
+				buffer = "[Buff]",
+				nvim_lsp = "[LSP]",
+				luasnip = "[LuaSnip]",
+				nvim_lua = "[Lua]",
+			})
+		}),
+	},
 })
 
 local on_attach = function(client, bufnr)
 
-	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
@@ -53,6 +64,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, bufopts)
 	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
 	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+	require 'lsp_signature'.on_attach({}, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
