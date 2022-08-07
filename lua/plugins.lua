@@ -95,6 +95,9 @@ return packer.startup(function(use)
 	})
 	use({
 		"L3MON4D3/LuaSnip",
+		config = function()
+			require("luasnip_conf")
+		end,
 	})
 	use({
 		"neovim/nvim-lspconfig",
