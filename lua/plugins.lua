@@ -187,6 +187,7 @@ return packer.startup(function(use)
 	})
 
 	use({ "norcalli/nvim-colorizer.lua" })
+	use({ "mattn/emmet-vim" })
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
 	end
