@@ -23,6 +23,9 @@ vim.cmd([[
     autocmd!
     autocmd VimResized * tabdo wincmd = 
     augroup end
+
+  autocmd CursorMoved * set nohlsearch
+  nnoremap n n:set hlsearch<cr>
 ]])
 
 -- Autoformat

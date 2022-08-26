@@ -4,6 +4,7 @@ if cmp == nil then
 end
 
 local lspkind = require("lspkind")
+local telescope = require("telescope.builtin")
 
 cmp.setup({
 	snippet = {
@@ -25,6 +26,7 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" }, -- For luasnip users.
+		{ name = "path" }, -- For luasnip users.
 	}),
 	formatting = {
 		format = lspkind.cmp_format({
@@ -46,7 +48,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+	vim.keymap.set("n", "gr", telescope.lsp_references, bufopts)
 	vim.keymap.set("n", "<A-k>", vim.lsp.buf.signature_help, bufopts)
 	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
 	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)

@@ -105,6 +105,7 @@ return packer.startup(function(use)
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-path",
 			"saadparwaiz1/cmp_luasnip",
 			"jose-elias-alvarez/null-ls.nvim",
 			"ray-x/lsp_signature.nvim",
@@ -185,6 +186,7 @@ return packer.startup(function(use)
 		"puremourning/vimspector",
 	})
 
+	use({ "norcalli/nvim-colorizer.lua" })
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
 	end

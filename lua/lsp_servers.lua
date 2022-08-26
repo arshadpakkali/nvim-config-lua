@@ -54,6 +54,23 @@ require("lspconfig")["dockerls"].setup({
 	capabilities = capabilities,
 })
 require("lspconfig")["pyright"].setup({
+	single_file_support = true,
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
+require("lspconfig")["bashls"].setup({
+	single_file_support = true,
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+require("lspconfig")["html"].setup({
+	single_file_support = true,
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+require("lspconfig")["angularls"].setup({
+	single_file_support = true,
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
@@ -61,5 +78,11 @@ require("null-ls").setup({
 	sources = {
 		require("null-ls").builtins.formatting.stylua,
 		require("null-ls").builtins.formatting.prettier,
+		require("null-ls").builtins.formatting.shfmt,
+		require("null-ls").builtins.formatting.black,
+		require("null-ls").builtins.diagnostics.shellcheck,
+		require("null-ls").builtins.code_actions.shellcheck,
+		require("null-ls").builtins.diagnostics.eslint,
+		require("null-ls").builtins.code_actions.eslint,
 	},
 })

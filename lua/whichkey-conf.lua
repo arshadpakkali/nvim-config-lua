@@ -80,7 +80,6 @@ local opts = {
 
 local noremap_mappings = {
 	["q"] = { "<cmd>q!<CR>", "Quit" },
-	["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
 	["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
 
 	["b"] = {
@@ -154,6 +153,9 @@ local noremap_mappings = {
 			"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
 			"Workspace Symbols",
 		},
+		c = {
+			"<cmd>source ~/.config/nvim/lua/luasnip_conf.lua",
+		},
 	},
 	s = {
 		name = "Search",
@@ -182,11 +184,11 @@ local remap_mappings = {
 		name = "Debugger",
 		d = { ":call vimspector#Launch()<CR>", "Launch " },
 		q = { ":call vimspector#Reset()<CR>", "Quit" },
-		r = { ":call vimspector#Restart()<CR>" },
-		c = { ":call vimspector#Continue()<CR>" },
-		j = { ":call vimspector#StepOut()<CR>" },
-		k = { ":call vimspector#StepInto()<CR>" },
-		l = { ":call vimspector#StepOver()<CR>" },
+		r = { ":call vimspector#Restart()<CR>", "" },
+		["c"] = { ":call vimspector#Continue()<CR>", "" },
+		j = { ":call vimspector#StepOut()<CR>", "" },
+		k = { ":call vimspector#StepInto()<CR>", "" },
+		l = { ":call vimspector#StepOver()<CR>", "" },
 		b = { ":call vimspector#ToggleBreakpoint()<CR>", "Toggle Breakpoint" },
 		["."] = { ":call vimspector#RunToCursor()<CR>", "Run To Cursor" },
 		["x"] = { ":call vimspector#ClearBreakpoints()<CR>", "clear all Breakpoints" },

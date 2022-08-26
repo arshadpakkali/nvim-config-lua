@@ -13,6 +13,7 @@ opt.clipboard = "unnamedplus"
 opt.signcolumn = "yes"
 opt.termguicolors = true
 
+opt.expandtab = true
 opt.tabstop = 4
 opt.shiftwidth = 4
 
