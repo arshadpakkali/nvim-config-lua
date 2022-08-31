@@ -127,7 +127,7 @@ local noremap_mappings = {
 		name = "LSP",
 		a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
 		d = {
-			"<cmd>Telescope lsp_document_diagnostics<CR>",
+			"<cmd>Telescope diagnostics<CR>",
 			"Document Diagnostics",
 		},
 		w = {

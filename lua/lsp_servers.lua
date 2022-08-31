@@ -69,10 +69,14 @@ require("lspconfig")["html"].setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
-require("lspconfig")["angularls"].setup({
-	single_file_support = true,
+require("lspconfig")["cssls"].setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
+})
+require("lspconfig")["angularls"].setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	root_dir = require("lspconfig").util.root_pattern("angular.json"),
 })
 require("null-ls").setup({
 	sources = {
