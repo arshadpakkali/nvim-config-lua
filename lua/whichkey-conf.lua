@@ -170,6 +170,12 @@ local noremap_mappings = {
 	},
 }
 
+if os.execute("git rev-parse &> /dev/null") == 0 then
+	noremap_mappings[" "] = { ":GFiles<CR>", "Git Files" }
+else
+	noremap_mappings[" "] = { ":Files<CR>", "Files" }
+end
+
 local remap_opts = {
 	mode = "n", -- NORMAL mode
 	prefix = "<leader>",

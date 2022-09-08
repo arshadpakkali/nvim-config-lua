@@ -14,13 +14,6 @@ keymap("i", "jk", "<Esc>")
 
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>")
 
-local telescope = require("telescope.builtin")
-
-if os.execute("git rev-parse &> /dev/null") == 0 then
-	vim.keymap.set("n", "<leader><leader>", telescope.fd)
-else
-	keymap("n", "<leader><leader>", ":Files<CR>")
-end
 
 keymap("n", "<leader>fr", ":Rg<CR>")
 
@@ -36,3 +29,4 @@ keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 vim.cmd("let g:vimspector_base_dir=expand('$HOME/.config/vimspector-config')")
+
