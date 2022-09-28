@@ -68,6 +68,14 @@ require("lspconfig")["html"].setup({
 	single_file_support = true,
 	on_attach = on_attach,
 	capabilities = capabilities,
+	init_options = {
+		configurationSection = { "html", "css", "javascript" },
+		embeddedLanguages = {
+			css = true,
+			javascript = true,
+		},
+		provideFormatter = false,
+	},
 })
 require("lspconfig")["cssls"].setup({
 	on_attach = on_attach,

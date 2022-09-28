@@ -43,6 +43,12 @@ return packer.startup(function(use)
 	use("junegunn/fzf.vim")
 	use("unblevable/quick-scope")
 	use({
+		"kyazdani42/nvim-web-devicons",
+		config = function()
+			require("nvim-web-devicons").setup({})
+		end,
+	})
+	use({
 		"nvim-lualine/lualine.nvim",
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 		config = function()
@@ -72,10 +78,10 @@ return packer.startup(function(use)
 
 	use({
 		"kyazdani42/nvim-tree.lua",
-		requires = "kyazdani42/nvim-web-devicons",
-		wants = "nvim-web-devicons",
+		requires = {
+			"kyazdani42/nvim-web-devicons",
+		},
 		config = function()
-			require("nvim-web-devicons").setup()
 			require("nvim-tree").setup({
 				view = {
 					width = 35,
@@ -105,7 +111,7 @@ return packer.startup(function(use)
 			"hrsh7th/nvim-cmp",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-path",
+			"hrsh7th/cmp-path",
 			"saadparwaiz1/cmp_luasnip",
 			"jose-elias-alvarez/null-ls.nvim",
 			"ray-x/lsp_signature.nvim",

@@ -80,7 +80,7 @@ local opts = {
 
 local noremap_mappings = {
 	["q"] = { "<cmd>q!<CR>", "Quit" },
-	["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+	["F"] = { "<cmd>Rg<cr>", "Find Text" },
 
 	["b"] = {
 		name = "Buffer",
@@ -146,6 +146,7 @@ local noremap_mappings = {
 			"Prev Diagnostic",
 		},
 		l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
+		L = { "<cmd>LspLog<cr>", "Lsp Log" },
 		q = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>", "Quickfix" },
 		r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
@@ -196,6 +197,7 @@ local remap_mappings = {
 		k = { ":call vimspector#StepInto()<CR>", "" },
 		l = { ":call vimspector#StepOver()<CR>", "" },
 		b = { ":call vimspector#ToggleBreakpoint()<CR>", "Toggle Breakpoint" },
+		["B"] = { ":call vimspector#ToggleAdvancedBreakpoint()<CR> ", "Toggle Breakpoint" },
 		["."] = { ":call vimspector#RunToCursor()<CR>", "Run To Cursor" },
 		["x"] = { ":call vimspector#ClearBreakpoints()<CR>", "clear all Breakpoints" },
 		i = { "<Plug>VimspectorBalloonEval", "Inspect" },

@@ -63,7 +63,6 @@ local on_attach = function(client, bufnr)
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, bufopts)
 
-
 	vim.keymap.set("n", "<space>qf", vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 
@@ -73,7 +72,7 @@ local on_attach = function(client, bufnr)
 
 	require("lsp_signature").on_attach({}, bufnr)
 
-	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls","html"}
+	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls", "html" }
 	for _, v in ipairs(ls_wo_format) do
 		if v == client.name then
 			client.resolved_capabilities.document_formatting = false
@@ -82,5 +81,6 @@ local on_attach = function(client, bufnr)
 end
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 return on_attach, capabilities
