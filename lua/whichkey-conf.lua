@@ -84,10 +84,7 @@ local noremap_mappings = {
 
 	["b"] = {
 		name = "Buffer",
-		b = {
-			"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-			"Buffers",
-		},
+		b = { "<cmd>Buffers<cr>", "Buffers" },
 		c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
 	},
 	p = {
