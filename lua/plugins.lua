@@ -105,6 +105,17 @@ return packer.startup(function(use)
 			require("luasnip_conf")
 		end,
 	})
+
+	use({
+		"williamboman/mason.nvim",
+		requries = {
+			"williamboman/mason-lspconfig.nvim",
+		},
+		config = function()
+			require("mason").setup()
+		end,
+	})
+
 	use({
 		"neovim/nvim-lspconfig",
 		requires = {
@@ -178,13 +189,6 @@ return packer.startup(function(use)
 					additional_vim_regex_highlighting = false,
 				},
 			})
-		end,
-	})
-
-	use({
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
 		end,
 	})
 

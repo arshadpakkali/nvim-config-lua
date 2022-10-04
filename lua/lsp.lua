@@ -72,10 +72,11 @@ local on_attach = function(client, bufnr)
 
 	require("lsp_signature").on_attach({}, bufnr)
 
+
 	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls", "html" }
 	for _, v in ipairs(ls_wo_format) do
 		if v == client.name then
-			client.resolved_capabilities.document_formatting = false
+			client.server_capabilities.documentFormattingProvider = false
 		end
 	end
 end
