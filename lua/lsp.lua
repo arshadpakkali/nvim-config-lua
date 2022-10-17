@@ -55,7 +55,7 @@ local on_attach = function(client, bufnr)
 
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, bufopts)
+	vim.keymap.set("n", "<space>f", vim.lsp.buf.format, bufopts)
 
 	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
 	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
@@ -72,7 +72,6 @@ local on_attach = function(client, bufnr)
 
 	require("lsp_signature").on_attach({}, bufnr)
 
-
 	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls", "html" }
 	for _, v in ipairs(ls_wo_format) do
 		if v == client.name then
@@ -81,7 +80,6 @@ local on_attach = function(client, bufnr)
 	end
 end
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 return on_attach, capabilities

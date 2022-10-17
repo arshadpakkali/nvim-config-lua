@@ -94,7 +94,7 @@ require("null-ls").setup({
 		require("null-ls").builtins.formatting.black,
 		require("null-ls").builtins.diagnostics.shellcheck,
 		require("null-ls").builtins.code_actions.shellcheck,
-		-- require("null-ls").builtins.diagnostics.eslint,
-		-- require("null-ls").builtins.code_actions.eslint,
+		require("null-ls").builtins.diagnostics.eslint,
+		require("null-ls").builtins.code_actions.eslint,
 	},
 })

@@ -108,11 +108,17 @@ return packer.startup(function(use)
 
 	use({
 		"williamboman/mason.nvim",
-		requries = {
-			"williamboman/mason-lspconfig.nvim",
-		},
 		config = function()
 			require("mason").setup()
+		end,
+	})
+
+	use({
+		"williamboman/mason-lspconfig.nvim",
+		config = function()
+			require("mason-lspconfig").setup({
+				automatic_installation = true,
+			})
 		end,
 	})
 
