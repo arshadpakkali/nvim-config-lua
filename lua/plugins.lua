@@ -192,6 +192,7 @@ return packer.startup(function(use)
 				auto_install = true,
 				highlight = {
 					enable = true,
+					disable = { "html" },
 					additional_vim_regex_highlighting = false,
 				},
 			})

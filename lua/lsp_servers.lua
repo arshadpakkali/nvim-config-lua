@@ -86,6 +86,15 @@ require("lspconfig")["angularls"].setup({
 	capabilities = capabilities,
 	root_dir = require("lspconfig").util.root_pattern("angular.json"),
 })
+require("lspconfig")["eslint"].setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
+require("lspconfig")["grammarly"].setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 require("null-ls").setup({
 	sources = {
 		require("null-ls").builtins.formatting.stylua,
@@ -94,7 +103,5 @@ require("null-ls").setup({
 		require("null-ls").builtins.formatting.black,
 		require("null-ls").builtins.diagnostics.shellcheck,
 		require("null-ls").builtins.code_actions.shellcheck,
-		require("null-ls").builtins.diagnostics.eslint,
-		require("null-ls").builtins.code_actions.eslint,
 	},
 })
