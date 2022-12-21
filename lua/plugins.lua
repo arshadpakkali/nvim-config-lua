@@ -205,6 +205,9 @@ return packer.startup(function(use)
 
 	use({ "norcalli/nvim-colorizer.lua" })
 	use({ "mattn/emmet-vim" })
+	use({ "tpope/vim-dadbod" })
+	use({ "kristijanhusak/vim-dadbod-ui" })
+
 	if PACKER_BOOTSTRAP then
 		require("packer").sync()
 	end
