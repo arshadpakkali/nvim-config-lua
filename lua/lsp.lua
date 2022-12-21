@@ -67,8 +67,12 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 
 	vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
-	vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
-	vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+	end, bufopts)
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+	end, bufopts)
 
 	require("lsp_signature").on_attach({}, bufnr)
 
