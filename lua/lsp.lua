@@ -1,7 +1,4 @@
 local cmp = require("cmp")
-if cmp == nil then
-	return
-end
 
 local lspkind = require("lspkind")
 local telescope = require("telescope.builtin")
@@ -21,7 +18,7 @@ cmp.setup({
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(), -- trigger completion
 		["<C-e>"] = cmp.mapping.abort(),
-		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+		["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
@@ -67,6 +64,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 
 	vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
+
 	vim.keymap.set("n", "[d", function()
 		vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 	end, bufopts)
@@ -75,15 +73,45 @@ local on_attach = function(client, bufnr)
 	end, bufopts)
 
 	require("lsp_signature").on_attach({}, bufnr)
-
-	local ls_wo_format = { "tsserver", "sumneko_lua", "jsonls", "yamlls", "html" }
-	for _, v in ipairs(ls_wo_format) do
-		if v == client.name then
-			client.server_capabilities.documentFormattingProvider = false
-		end
-	end
 end
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-return on_attach, capabilities
+local lsp_server_settings = {
+	jsonls = {
+		json = {
+			schemas = require("schemastore").json.schemas(),
+			validate = { enable = true },
+		},
+	},
+	yamlls = {
+		yaml = {
+			schemas = require("schemastore").json.schemas(),
+			validate = { enable = true },
+		},
+	},
+}
+
+local mason_lspconfig = require("mason-lspconfig")
+
+mason_lspconfig.setup_handlers({
+	function(server_name)
+		require("lspconfig")[server_name].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = lsp_server_settings[server_name],
+		})
+	end,
+})
+
+require("null-ls").setup({
+	sources = {
+		require("null-ls").builtins.formatting.stylua,
+		require("null-ls").builtins.formatting.prettier,
+		require("null-ls").builtins.formatting.shfmt,
+		require("null-ls").builtins.formatting.black,
+		require("null-ls").builtins.diagnostics.shellcheck,
+		require("null-ls").builtins.code_actions.shellcheck,
+	},
+})

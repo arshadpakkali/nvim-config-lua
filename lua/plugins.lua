@@ -133,10 +133,11 @@ return packer.startup(function(use)
 			"jose-elias-alvarez/null-ls.nvim",
 			"ray-x/lsp_signature.nvim",
 			"b0o/schemastore.nvim",
+			"folke/neodev.nvim",
 		},
 		config = function()
+			require("neodev").setup()
 			require("lsp")
-			require("lsp_servers")
 		end,
 	})
 	use({

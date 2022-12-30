@@ -1,3 +1,4 @@
+-- This file is not in use need to clean up later
 local on_attach, capabilities = require("lsp")
 
 require("lspconfig")["tsserver"].setup({
