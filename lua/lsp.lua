@@ -24,6 +24,7 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" }, -- For luasnip users.
 		{ name = "path" }, -- For luasnip users.
+		{ name = "neorg" },
 	}),
 	formatting = {
 		format = lspkind.cmp_format({
@@ -38,9 +39,10 @@ cmp.setup({
 	},
 })
 
+require("lsp_signature").setup()
+
 local on_attach = function(client, bufnr)
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-
 	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
@@ -71,8 +73,6 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "]d", function()
 		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 	end, bufopts)
-
-	require("lsp_signature").on_attach({}, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
