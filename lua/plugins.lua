@@ -351,6 +351,7 @@ return packer.startup(function(use)
 	use({ "mattn/emmet-vim" })
 	use({ "tpope/vim-dadbod" })
 	use({ "kristijanhusak/vim-dadbod-ui" })
+	use({ "liuchengxu/vista.vim" })
 
 	use({
 		"nvim-neorg/neorg",

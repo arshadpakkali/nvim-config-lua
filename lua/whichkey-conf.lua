@@ -162,10 +162,14 @@ local noremap_mappings = {
 		k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
 		C = { "<cmd>Telescope commands<cr>", "Commands" },
 	},
+	t = {
+		name = "toggle",
+		d = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" },
+	},
 }
 
 if os.execute("git rev-parse &> /dev/null") == 0 then
-	noremap_mappings[" "] = { ":GFiles<CR>", "Git Files" }
+	noremap_mappings[" "] = { ":GFiles --cached --others --exclude-standard<CR>", "Git Files" }
 else
 	noremap_mappings[" "] = { ":Files<CR>", "Files" }
 end
