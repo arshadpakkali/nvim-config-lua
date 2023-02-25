@@ -194,7 +194,6 @@ return packer.startup(function(use)
 			require("nvim-treesitter.configs").setup({
 				-- Add languages to be installed here that you want installed for treesitter
 				ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "typescript", "help", "norg" },
-
 				highlight = { enable = true },
 				indent = { enable = true, disable = { "python" } },
 				incremental_selection = {
@@ -330,7 +329,6 @@ return packer.startup(function(use)
 					-- exactly match "impl_item" only)
 					-- rust = true,
 				},
-
 				-- [!] The options below are exposed but shouldn't require your attention,
 				--     you can safely ignore them.
 
@@ -352,6 +350,7 @@ return packer.startup(function(use)
 	use({ "tpope/vim-dadbod" })
 	use({ "kristijanhusak/vim-dadbod-ui" })
 	use({ "liuchengxu/vista.vim" })
+	use({ "github/copilot.vim" })
 
 	use({
 		"nvim-neorg/neorg",
@@ -359,16 +358,19 @@ return packer.startup(function(use)
 			require("neorg").setup({
 				load = {
 					["core.defaults"] = {},
+					["core.export"] = {},
+					["core.export.markdown"] = {},
 					["core.norg.dirman"] = {
 						config = {
+							default_workspace = "home",
 							workspaces = {
-								work = "~/Documents/notes/work",
-								home = "~/Documents/notes/home",
+								home = "~/Documents/Notes/",
 							},
 						},
 					},
 					["core.norg.concealer"] = {
-						config = {},
+						config = {
+						},
 					},
 					["core.norg.completion"] = {
 						config = {

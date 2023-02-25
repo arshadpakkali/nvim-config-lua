@@ -103,6 +103,25 @@ local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup_handlers({
 	function(server_name)
+		if server_name == "angularls" then
+			local cmd = {
+				"ngserver",
+				"--tsProbeLocations",
+				"/home/arshad/.local/lib/node_modules/lib/",
+				"--ngProbeLocations",
+				"/home/arshad/.local/lib/node_modules/lib",
+				"--stdio",
+			}
+			require("lspconfig")[server_name].setup({
+				cmd = cmd,
+				on_new_config = function(new_config, new_root_dir)
+					new_config.cmd = cmd
+				end,
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
+			return
+		end
 		require("lspconfig")[server_name].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,

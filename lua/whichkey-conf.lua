@@ -165,6 +165,7 @@ local noremap_mappings = {
 	t = {
 		name = "toggle",
 		d = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" },
+        j = {"<cmd>Neorg journal today<CR>","Neorg journal"}
 	},
 }
 
