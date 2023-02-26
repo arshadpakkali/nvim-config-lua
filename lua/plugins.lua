@@ -369,8 +369,7 @@ return packer.startup(function(use)
 						},
 					},
 					["core.norg.concealer"] = {
-						config = {
-						},
+						config = {},
 					},
 					["core.norg.completion"] = {
 						config = {
@@ -381,6 +380,10 @@ return packer.startup(function(use)
 			})
 		end,
 		requires = "nvim-lua/plenary.nvim",
+	})
+
+	use({
+		"lukas-reineke/indent-blankline.nvim",
 	})
 
 	if PACKER_BOOTSTRAP then
