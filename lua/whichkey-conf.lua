@@ -81,7 +81,6 @@ local opts = {
 local noremap_mappings = {
 	["q"] = { "<cmd>q!<CR>", "Quit" },
 	["F"] = { "<cmd>Rg<cr>", "Find Text" },
-
 	["b"] = {
 		name = "Buffer",
 		b = { "<cmd>Buffers<cr>", "Buffers" },
@@ -96,7 +95,6 @@ local noremap_mappings = {
 		u = { "<cmd>PackerUpdate<cr>", "Update" },
 		m = { "<cmd>Mason<cr>", "Mason" },
 	},
-
 	g = {
 		name = "Git",
 		g = { ":Git<CR>", "Fugitive" },
@@ -119,7 +117,6 @@ local noremap_mappings = {
 			"Diff",
 		},
 	},
-
 	l = {
 		name = "LSP",
 		a = { "<cmd>lua vim.lsp.buf.code_action()<CR>", "Code Action" },
@@ -165,7 +162,8 @@ local noremap_mappings = {
 	t = {
 		name = "toggle",
 		d = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" },
-        j = {"<cmd>Neorg journal today<CR>","Neorg journal"}
+		j = { "<cmd>Neorg journal today<CR>", "Neorg journal" },
+		c = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
 	},
 }
 
