@@ -1,5 +1,4 @@
 local opts = { noremap = true, silent = true }
--- Shorten function name
 local function keymap(mode, key, command, opt)
 	opt = (opt == nil and opts) or opt
 	return vim.api.nvim_set_keymap(mode, key, command, opt)

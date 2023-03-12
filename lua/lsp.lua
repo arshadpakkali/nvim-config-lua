@@ -1,6 +1,5 @@
 local cmp = require("cmp")
 
-local lspkind = require("lspkind")
 local telescope = require("telescope.builtin")
 
 require("neodev").setup({
@@ -31,7 +30,7 @@ cmp.setup({
         { name = "neorg" },
     }),
     formatting = {
-        format = lspkind.cmp_format({
+        format = require 'lspkind'.cmp_format({
             mode = "symbol_text",
             menu = {
                 buffer = "[Buff]",
@@ -161,7 +160,7 @@ mason_lspconfig.setup_handlers({
 
 require("null-ls").setup({
     sources = {
-        -- require("null-ls").builtins.formatting.stylua,
+        require("null-ls").builtins.formatting.stylua,
         require("null-ls").builtins.formatting.prettier,
         require("null-ls").builtins.formatting.shfmt,
         require("null-ls").builtins.formatting.black,
