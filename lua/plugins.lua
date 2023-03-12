@@ -98,15 +98,12 @@ return packer.startup(function(use)
     })
 
     use({
-        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        requires = {
+            "williamboman/mason.nvim",
+        },
         config = function()
             require("mason").setup()
-        end,
-    })
-
-    use({
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
             require("mason-lspconfig").setup({
                 automatic_installation = true,
             })
@@ -127,7 +124,7 @@ return packer.startup(function(use)
             "folke/neodev.nvim",
         },
         config = function()
-            require("lsp")
+            require("lsp_config")
         end,
     })
     use({
@@ -181,7 +178,7 @@ return packer.startup(function(use)
         },
         run = ":TSUpdate",
         config = function()
-            require 'treesitter_config'
+            require('treesitter_config')
         end,
     })
     use({ "norcalli/nvim-colorizer.lua" })
