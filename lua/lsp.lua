@@ -3,6 +3,10 @@ local cmp = require("cmp")
 local lspkind = require("lspkind")
 local telescope = require("telescope.builtin")
 
+require("neodev").setup({
+    library = { plugins = { "nvim-dap-ui" }, types = true },
+})
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -42,13 +46,22 @@ cmp.setup({
 require("lsp_signature").setup()
 
 local on_attach = function(client, bufnr)
+    vim.diagnostic.config({
+        virtual_text = {
+            source = "always",
+        },
+        float = {
+            source = "always",
+        },
+    })
     local bufopts = { noremap = true, silent = true, buffer = bufnr }
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
     vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
-    vim.keymap.set("n", "gr", telescope.lsp_references, bufopts)
-
+    vim.keymap.set("n", "gr", function()
+        telescope.lsp_references({ include_declaration = false })
+    end, bufopts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
     vim.keymap.set("n", "<A-k>", vim.lsp.buf.signature_help, bufopts)
 
