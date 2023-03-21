@@ -1,228 +1,178 @@
 local fn = vim.fn
 
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-    PACKER_BOOTSTRAP = fn.system({
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/wbthomason/packer.nvim",
-        install_path,
-    })
-    print("Installing packer close and reopen Neovim...")
-    vim.cmd([[packadd packer.nvim]])
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[
-augroup packer_user_config
-autocmd!
-autocmd BufWritePost plugins.lua source <afile> | PackerSync
-augroup end
-]])
+require("lazy").setup({
+	"lewis6991/impatient.nvim",
+	"unblevable/quick-scope",
+	"norcalli/nvim-colorizer.lua",
+	"mattn/emmet-vim",
+	"tpope/vim-dadbod",
+	"kristijanhusak/vim-dadbod-ui",
+	-- "github/copilot.vim",
+	"kdheepak/lazygit.nvim",
+	"tpope/vim-surround",
+	"tpope/vim-commentary",
+	"tpope/vim-fugitive",
+	"folke/which-key.nvim",
+	"L3MON4D3/LuaSnip",
+	{
+		"ellisonleao/gruvbox.nvim",
+		config = function()
+			require("gruvbox").setup({ contrast = "hard" })
+			vim.cmd("colorscheme gruvbox")
+		end,
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		dependencies = { "ellisonleao/gruvbox.nvim" },
+		config = function()
+			require("indent_blankline").setup({
+				show_current_context = true,
+			})
+		end,
+	},
+	{
+		"nvim-neorg/neorg",
+		dependencies = "nvim-lua/plenary.nvim",
+	},
+	{
+		"kyazdani42/nvim-web-devicons",
+		config = function()
+			require("nvim-web-devicons").setup({})
+		end,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "kyazdani42/nvim-web-devicons", opt = true },
+		config = function()
+			require("lualine").setup({})
+		end,
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	},
+	{
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup({})
+		end,
+	},
+	{
+		"onsails/lspkind.nvim",
+		config = function()
+			require("lspkind").init()
+		end,
+	},
+	{
+		"kyazdani42/nvim-tree.lua",
+		dependencies = {
+			"kyazdani42/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup({
+				view = {
+					width = 35,
+					mappings = {
+						list = {
+							{ key = "l", action = "edit" },
+							{ key = "h", action = "close_node" },
+						},
+					},
+				},
+				update_focused_file = {
+					enable = true,
+					update_root = false,
+				},
+			})
+		end,
+	},
+	{
+		"williamboman/mason-lspconfig.nvim",
+		dependencies = {
+			"williamboman/mason.nvim",
+		},
+		config = function()
+			require("mason").setup()
+			require("mason-lspconfig").setup({
+				automatic_installation = true,
+			})
+		end,
+	},
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"hrsh7th/nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
+			"hrsh7th/cmp-nvim-lua",
+			"hrsh7th/cmp-path",
+			"saadparwaiz1/cmp_luasnip",
+			"jose-elias-alvarez/null-ls.nvim",
+			"ray-x/lsp_signature.nvim",
+			"b0o/schemastore.nvim",
+			"folke/neodev.nvim",
+			"L3MON4D3/LuaSnip",
+			"rcarriga/cmp-dap",
+		},
+	},
+	{
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.0",
+		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzf-native.nvim" },
+		config = function()
+			local telescopeActions = require("telescope.actions")
 
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-    return
-end
-
-packer.init({
-    display = {
-        open_fn = function()
-            return require("packer.util").float({ border = "rounded" })
-        end,
-    },
+			require("telescope").setup({
+				defaults = {
+					mappings = {
+						i = {
+							["<Esc>"] = telescopeActions.close,
+							["<C-u>"] = false,
+						},
+					},
+				},
+			})
+			require("telescope").load_extension("fzf")
+		end,
+	},
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+	},
+	{
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-context",
+		},
+		build = ":TSUpdate",
+	},
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"theHamsta/nvim-dap-virtual-text",
+			"rcarriga/nvim-dap-ui",
+		},
+	},
+	{ "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
 })
-
-return packer.startup(function(use)
-    use("wbthomason/packer.nvim")
-    use("lewis6991/impatient.nvim")
-    use("junegunn/fzf.vim")
-    use("unblevable/quick-scope")
-    use({
-        "kyazdani42/nvim-web-devicons",
-        config = function()
-            require("nvim-web-devicons").setup({})
-        end,
-    })
-    use({
-        "nvim-lualine/lualine.nvim",
-        requires = { "kyazdani42/nvim-web-devicons", opt = true },
-        config = function()
-            require("lualine").setup({})
-        end,
-    })
-    use({
-        "lewis6991/gitsigns.nvim",
-        config = function()
-            require("gitsigns").setup()
-        end,
-    })
-
-    use({
-        "ellisonleao/gruvbox.nvim",
-        config = function()
-            require("gruvbox").setup({ contrast = "hard" })
-            vim.cmd("colorscheme gruvbox")
-        end,
-    })
-
-    use({
-        "kyazdani42/nvim-tree.lua",
-        requires = {
-            "kyazdani42/nvim-web-devicons",
-        },
-        config = function()
-            require("nvim-tree").setup({
-                view = {
-                    width = 35,
-                    mappings = {
-                        list = {
-                            { key = "l", action = "edit" },
-                            { key = "h", action = "close_node" },
-                        },
-                    },
-                },
-                update_focused_file = {
-                    enable = true,
-                    update_root = false,
-                },
-            })
-        end,
-    })
-    use({
-        "L3MON4D3/LuaSnip",
-        config = function()
-            require("luasnip_conf")
-        end,
-    })
-
-    use({
-        "williamboman/mason-lspconfig.nvim",
-        requires = {
-            "williamboman/mason.nvim",
-        },
-        config = function()
-            require("mason").setup()
-            require("mason-lspconfig").setup({
-                automatic_installation = true,
-            })
-        end,
-    })
-
-    use({
-        "neovim/nvim-lspconfig",
-        requires = {
-            "hrsh7th/nvim-cmp",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-nvim-lua",
-            "hrsh7th/cmp-path",
-            "saadparwaiz1/cmp_luasnip",
-            "jose-elias-alvarez/null-ls.nvim",
-            "ray-x/lsp_signature.nvim",
-            "b0o/schemastore.nvim",
-            "folke/neodev.nvim",
-        },
-        config = function()
-            require("lsp_config")
-        end,
-    })
-    use({
-        "j-hui/fidget.nvim",
-        config = function()
-            require("fidget").setup({})
-        end,
-    })
-
-    use({
-        "onsails/lspkind.nvim",
-        config = function()
-            require("lspkind").init()
-        end,
-    })
-
-    use({
-        "nvim-telescope/telescope.nvim",
-        tag = "0.1.0",
-        requires = { { "nvim-lua/plenary.nvim" } },
-        config = function()
-            local telescopeActions = require("telescope.actions")
-
-            require("telescope").setup({
-                defaults = {
-                    mappings = {
-                        i = {
-                            ["<Esc>"] = telescopeActions.close,
-                            ["<C-u>"] = false,
-                        },
-                    },
-                },
-            })
-        end,
-    })
-
-    use("tpope/vim-surround")
-    use("tpope/vim-commentary")
-    use("tpope/vim-fugitive")
-    use({
-        "windwp/nvim-autopairs",
-        config = function()
-            require("nvim-autopairs").setup({})
-        end,
-    })
-    use({
-        "nvim-treesitter/nvim-treesitter",
-        requires = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
-            "nvim-treesitter/nvim-treesitter-context",
-        },
-        run = ":TSUpdate",
-        config = function()
-            require('treesitter_config')
-        end,
-    })
-    use({ "norcalli/nvim-colorizer.lua" })
-    use({ "mattn/emmet-vim" })
-    use({ "tpope/vim-dadbod" })
-    use({ "kristijanhusak/vim-dadbod-ui" })
-    use({ "liuchengxu/vista.vim" })
-    use({ "github/copilot.vim" })
-
-    use({
-        "nvim-neorg/neorg",
-        config = function()
-            require('neorg_config')
-        end,
-        requires = "nvim-lua/plenary.nvim",
-    })
-
-    use({
-        "lukas-reineke/indent-blankline.nvim",
-    })
-    use({
-        "kdheepak/lazygit.nvim"
-    })
-
-    use({
-        'mfussenegger/nvim-dap',
-        requires = {
-            'theHamsta/nvim-dap-virtual-text',
-            'mxsdev/nvim-dap-vscode-js',
-            'rcarriga/nvim-dap-ui'
-        },
-        config = function()
-            require('dap_config')
-        end
-    })
-
-
-    use({
-        "folke/which-key.nvim",
-        config = function()
-            require("whichkey-conf")
-        end,
-    })
-    if PACKER_BOOTSTRAP then
-        require("packer").sync()
-    end
-end)

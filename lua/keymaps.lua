@@ -13,7 +13,6 @@ keymap("i", "jk", "<Esc>")
 
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>")
 
-
 keymap("n", "<leader>fr", ":Rg<CR>")
 
 keymap("n", "<C-h>", "<C-w>h")
@@ -27,3 +26,6 @@ keymap("n", "<C-Left>", ":vertical resize +2<CR>", opts)
 keymap("n", "<C-Right>", ":vertical resize -2<CR>", opts)
 
 
+
+keymap("n", "]q", ":cnext<CR>", opts)
+keymap("n", "[q", ":cprev<CR>", opts)

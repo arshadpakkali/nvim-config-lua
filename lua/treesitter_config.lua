@@ -1,6 +1,5 @@
 require("nvim-treesitter.configs").setup({
-	-- Add languages to be installed here that you want installed for treesitter
-	ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "typescript", "help", "norg" },
+	ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "typescript", "help", "norg","javascript" },
 	highlight = { enable = true },
 	indent = { enable = true, disable = { "python" } },
 	incremental_selection = {
@@ -62,7 +61,8 @@ require("treesitter-context").setup({
 	max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
 	trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
 	min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-	patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+	patterns = {
+		-- Match patterns for TS nodes. These get wrapped to match at word boundaries.
 		-- For all filetypes
 		-- Note that setting an entry here replaces all other patterns for this entry.
 		-- By setting the 'default' entry below, you can control which nodes you want to
