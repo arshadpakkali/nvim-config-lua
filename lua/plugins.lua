@@ -55,7 +55,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons", opt = true },
+		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			require("lualine").setup({})
 		end,
@@ -132,7 +132,14 @@ require("lazy").setup({
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.0",
-		dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope-fzf-native.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-fzf-native.nvim",
+			{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
+			{
+				"prochri/telescope-all-recent.nvim",
+			},
+		},
 		config = function()
 			local telescopeActions = require("telescope.actions")
 
@@ -147,6 +154,8 @@ require("lazy").setup({
 				},
 			})
 			require("telescope").load_extension("fzf")
+			require("telescope").load_extension("frecency")
+			require("telescope-all-recent").setup({})
 		end,
 	},
 	{

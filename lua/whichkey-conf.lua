@@ -209,7 +209,7 @@ local remap_mappings = {
 		},
 		q = {
 			function()
-				dap.terminate()
+				dap.disconnect({ restart = false, terminateDebuggee = true })
 			end,
 			"Quit",
 		},
@@ -248,6 +248,12 @@ local remap_mappings = {
 				dap.toggle_breakpoint()
 			end,
 			"Toggle Breakpoint",
+		},
+		["B"] = {
+			function()
+				dap.toggle_breakpoint({})
+			end,
+			"Toggle Advanced Breakpoint",
 		},
 		e = {
 			function()
