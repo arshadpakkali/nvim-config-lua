@@ -4,10 +4,10 @@ local dap = require("dap")
 require("nvim-dap-virtual-text").setup({})
 require("dapui").setup()
 
-require("dap-vscode-js").setup({
-	debugger_cmd = { "js-debug-adapter" },
-	adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
-})
+-- require("dap-vscode-js").setup({
+-- 	debugger_cmd = { "js-debug-adapter" },
+-- 	adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }, -- which adapters to register in nvim-dap
+-- })
 
 vim.api.nvim_set_hl(0, "DapStoppedLinehl", { bg = "#555530" })
 vim.fn.sign_define("DapBreakpoint", { text = icons.ui.Circle, texthl = "DapBreakpoint", linehl = "", numhl = "" })
@@ -28,6 +28,10 @@ vim.fn.sign_define(
 dap.adapters.node2 = {
 	type = "executable",
 	command = "node-debug2-adapter",
+}
+dap.adapters.web = {
+	type = "executable",
+	command = "chrome-debug-adapter",
 }
 
 for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
