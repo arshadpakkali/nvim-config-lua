@@ -201,7 +201,28 @@ local remap_mappings = {
 		d = {
 			function()
 				if vim.fn.filereadable(".vscode/Launch.json") then
-					require("dap.ext.vscode").load_launchjs(nil, { ["web"] = { "html" } })
+					require("dap.ext.vscode").load_launchjs(nil, {
+						["chrome_debug"] = {
+							"html",
+							"typescript",
+							"javascript",
+							"javascriptreact",
+							"typescriptreact",
+						},
+						["firefox_debug"] = {
+							"html",
+							"typescript",
+							"javascript",
+							"javascriptreact",
+							"typescriptreact",
+						},
+						["node_debug"] = {
+							"typescript",
+							"javascript",
+							"javascriptreact",
+							"typescriptreact",
+						},
+					})
 				end
 				dap.continue()
 			end,

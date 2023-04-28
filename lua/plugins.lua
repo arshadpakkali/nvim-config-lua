@@ -183,5 +183,7 @@ require("lazy").setup({
 			"rcarriga/nvim-dap-ui",
 		},
 	},
-	{ "mxsdev/nvim-dap-vscode-js", dependencies = { "mfussenegger/nvim-dap" } },
+    {
+        "jidn/vim-dbml"
+    }
 })

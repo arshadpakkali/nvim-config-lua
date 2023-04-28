@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup({
-	ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "typescript", "help", "norg", "javascript" },
+	ensure_installed = { "go", "lua", "python", "rust", "typescript", "help", "norg", "javascript", "tsx","html" },
 	highlight = { enable = true },
 	indent = { enable = true },
 	incremental_selection = {
