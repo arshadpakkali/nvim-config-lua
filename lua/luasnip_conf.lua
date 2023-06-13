@@ -33,7 +33,7 @@ for _, lang in ipairs(jsLike) do
 		s(
 			"clg",
 			fmt(
-				[[ 
+				[[
     console.log({})
     ]],
 				{ i(1, "item") }

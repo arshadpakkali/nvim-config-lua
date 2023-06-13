@@ -165,13 +165,20 @@ mason_lspconfig.setup_handlers({
 	end,
 })
 
-require("null-ls").setup({
+local null_ls = require("null-ls")
+
+null_ls.setup({
 	sources = {
-		require("null-ls").builtins.formatting.stylua,
-		require("null-ls").builtins.formatting.prettier,
-		require("null-ls").builtins.formatting.shfmt,
-		require("null-ls").builtins.formatting.black,
-		require("null-ls").builtins.diagnostics.shellcheck,
-		require("null-ls").builtins.code_actions.shellcheck,
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.prettier,
+		null_ls.builtins.formatting.shfmt,
+		null_ls.builtins.formatting.black,
+		-- null_ls.builtins.formatting.sqlfmt,
+		-- null_ls.builtins.formatting.sqlfluff.with({
+		--     extra_args = { "--dialect", "postgres" },
+		-- }),
+		null_ls.builtins.formatting.sql_formatter.with({ extra_args = { "-l", "postgresql" } }),
+		null_ls.builtins.diagnostics.shellcheck,
+		null_ls.builtins.code_actions.shellcheck,
 	},
 })

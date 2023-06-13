@@ -31,6 +31,9 @@ require("lazy").setup({
 		"ellisonleao/gruvbox.nvim",
 		config = function()
 			require("gruvbox").setup({ contrast = "hard" })
+			vim.cmd("let g:gruvbox_transparent_bg = 1")
+			vim.cmd("autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE")
+			vim.cmd("colorscheme gruvbox")
 			vim.cmd("colorscheme gruvbox")
 		end,
 	},
@@ -85,14 +88,9 @@ require("lazy").setup({
 		},
 		config = function()
 			require("nvim-tree").setup({
+				on_attach = require("nvimtree_config"),
 				view = {
 					width = 35,
-					mappings = {
-						list = {
-							{ key = "l", action = "edit" },
-							{ key = "h", action = "close_node" },
-						},
-					},
 				},
 				update_focused_file = {
 					enable = true,
@@ -183,7 +181,7 @@ require("lazy").setup({
 			"rcarriga/nvim-dap-ui",
 		},
 	},
-    {
-        "jidn/vim-dbml"
-    }
+	{
+		"jidn/vim-dbml",
+	},
 })

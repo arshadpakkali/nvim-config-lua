@@ -33,7 +33,7 @@ local noremap_mappings = {
 			end,
 			"Buffers",
 		},
-		c = { "<cmd>bc<CR>", "Close Buffer" },
+		c = { "<cmd>bd<CR>", "Close Buffer" },
 		n = { "<cmd>bn<CR>", "Prev Buffer" },
 		p = { "<cmd>bp<CR>", "Next Buffer" },
 	},
@@ -79,13 +79,13 @@ local noremap_mappings = {
 		},
 		d = {
 			function()
-				telescope_builtin.diagnostic()
+				telescope_builtin.diagnostics({ bufnr = nil })
 			end,
 			"Workspace Diagnostics",
 		},
 		f = {
 			function()
-				vim.lsp.buf.formatting()
+				vim.lsp.buf.format()
 			end,
 			"Format",
 		},
@@ -272,7 +272,7 @@ local remap_mappings = {
 		},
 		["B"] = {
 			function()
-				dap.toggle_breakpoint({})
+				dap.toggle_breakpoint(vim.fn.input("Condition: "))
 			end,
 			"Toggle Advanced Breakpoint",
 		},
