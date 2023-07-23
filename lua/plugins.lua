@@ -184,4 +184,7 @@ require("lazy").setup({
 	{
 		"jidn/vim-dbml",
 	},
+	{
+		"digitaltoad/vim-pug",
+	},
 })
