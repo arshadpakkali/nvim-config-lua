@@ -5,6 +5,7 @@ local function keymap(mode, key, command, opt)
 end
 
 vim.g.mapleader = " "
+vim.cmd[[let maplocalleader=","]]
 
 keymap("", "<Space>", "<Nop>")
 

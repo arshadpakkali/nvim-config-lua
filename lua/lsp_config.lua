@@ -24,8 +24,10 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
+		{ name = "nvim_lua" },
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" }, -- For luasnip users.
+		{ name = "vim-dadbod-completion" }, -- For luasnip users.
 		{ name = "path" }, -- For luasnip users.
 		{ name = "neorg" },
 	}),
@@ -34,9 +36,10 @@ cmp.setup({
 			mode = "symbol_text",
 			menu = {
 				buffer = "[Buff]",
-				nvim_lsp = "[LSP]",
-				luasnip = "[LuaSnip]",
-				nvim_lua = "[Lua]",
+				nvim_lsp = "[Nvim_lsp]",
+				luasnip = "[Luasnip]",
+				nvim_lua = "[Nvim_Lua]",
+				["vim-dadbod-completion"] = "[dadbod]",
 			},
 		}),
 	},

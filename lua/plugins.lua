@@ -18,8 +18,6 @@ require("lazy").setup({
 	"unblevable/quick-scope",
 	"norcalli/nvim-colorizer.lua",
 	"mattn/emmet-vim",
-	"tpope/vim-dadbod",
-	"kristijanhusak/vim-dadbod-ui",
 	-- "github/copilot.vim",
 	"kdheepak/lazygit.nvim",
 	"tpope/vim-surround",
@@ -27,6 +25,23 @@ require("lazy").setup({
 	"tpope/vim-fugitive",
 	"folke/which-key.nvim",
 	"L3MON4D3/LuaSnip",
+	{
+		"kristijanhusak/vim-dadbod-ui",
+		dependencies = {
+			{ "tpope/vim-dadbod", lazy = true },
+			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+		},
+		cmd = {
+			"DBUI",
+			"DBUIToggle",
+			"DBUIAddConnection",
+			"DBUIFindBuffer",
+		},
+		init = function()
+			-- Your DBUI configuration
+			vim.g.db_ui_use_nerd_fonts = 1
+		end,
+	},
 	{
 		"ellisonleao/gruvbox.nvim",
 		config = function()
@@ -71,8 +86,8 @@ require("lazy").setup({
 	},
 	{
 		"j-hui/fidget.nvim",
-        tag="legacy",
-        event="LspAttach",
+		tag = "legacy",
+		event = "LspAttach",
 		config = function()
 			require("fidget").setup({})
 		end,
