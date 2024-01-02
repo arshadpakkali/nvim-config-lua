@@ -54,12 +54,12 @@ require("lazy").setup({
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		dependencies = { "ellisonleao/gruvbox.nvim" },
-		config = function()
-			require("indent_blankline").setup({
-				show_current_context = true,
-			})
-		end,
+		main = "ibl",
+		opts = {
+			scope = {
+				enabled = false,
+			},
+		},
 	},
 	{
 		"nvim-neorg/neorg",
@@ -146,7 +146,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		tag = "0.1.0",
+		tag = "0.1.4",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
@@ -160,6 +160,7 @@ require("lazy").setup({
 
 			require("telescope").setup({
 				defaults = {
+					layout_strategy = "flex",
 					mappings = {
 						i = {
 							["<Esc>"] = telescopeActions.close,
@@ -203,5 +204,11 @@ require("lazy").setup({
 	},
 	{
 		"digitaltoad/vim-pug",
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
 	},
 })
