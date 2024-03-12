@@ -173,6 +173,7 @@ if os.execute("git rev-parse &> /dev/null") == 0 then
 		function()
 			telescope_builtin.git_files({
 				git_command = { "git", "ls-files", "--cached", "--others", "--exclude-standard" },
+				path_display = { "truncate" },
 			})
 		end,
 		"Git Files",

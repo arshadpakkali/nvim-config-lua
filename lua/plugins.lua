@@ -107,7 +107,7 @@ require("lazy").setup({
 			require("nvim-tree").setup({
 				on_attach = require("nvimtree_config"),
 				view = {
-					width = 35,
+					width = 45,
 				},
 				update_focused_file = {
 					enable = true,
@@ -161,6 +161,7 @@ require("lazy").setup({
 			require("telescope").setup({
 				defaults = {
 					layout_strategy = "flex",
+					path_display = { "shorten" },
 					mappings = {
 						i = {
 							["<Esc>"] = telescopeActions.close,
