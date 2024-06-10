@@ -26,6 +26,12 @@ require("lazy").setup({
 	"folke/which-key.nvim",
 	"L3MON4D3/LuaSnip",
 	{
+		-- for neorg vim
+		"vhyrro/luarocks.nvim",
+		priority = 1000,
+		config = true,
+	},
+	{
 		"kristijanhusak/vim-dadbod-ui",
 		dependencies = {
 			{ "tpope/vim-dadbod", lazy = true },
@@ -63,7 +69,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-neorg/neorg",
-		dependencies = "nvim-lua/plenary.nvim",
+		dependencies = "luarocks.nvim",
 	},
 	{
 		"kyazdani42/nvim-web-devicons",
@@ -198,6 +204,7 @@ require("lazy").setup({
 		dependencies = {
 			"theHamsta/nvim-dap-virtual-text",
 			"rcarriga/nvim-dap-ui",
+			"nvim-neotest/nvim-nio",
 		},
 	},
 	{

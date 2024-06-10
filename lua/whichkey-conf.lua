@@ -179,7 +179,7 @@ if os.execute("git rev-parse &> /dev/null") == 0 then
 		"Git Files",
 	}
 else
-	noremap_mappings[" "] = {
+	noremap_mappings["<leader>"] = {
 		function()
 			telescope_builtin.find_files()
 		end,
@@ -232,6 +232,7 @@ local remap_mappings = {
 		q = {
 			function()
 				dap.disconnect({ restart = false, terminateDebuggee = true })
+                dap.close()
 			end,
 			"Quit",
 		},
