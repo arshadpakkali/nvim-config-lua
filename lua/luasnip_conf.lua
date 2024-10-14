@@ -91,3 +91,8 @@ for _, lang in ipairs(jsLike) do
 		s("impp", fmta([[import {<>} from '<>']], { i(1, "n"), i(2, "l") })),
 	})
 end
+
+ls.add_snippets("sql", {
+
+	s("pub", fmt([[public.{}]], { i(1, "table_name") })),
+})

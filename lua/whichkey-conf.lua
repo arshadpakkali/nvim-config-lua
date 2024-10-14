@@ -1,6 +1,8 @@
 local which_key = require("which-key")
+local telescope = require("telescope")
 local telescope_builtin = require("telescope.builtin")
 local dap = require("dap")
+local dapui = require("dapui")
 
 local noremap_opts = {
 	mode = "n", -- NORMAL mode
@@ -85,7 +87,11 @@ local noremap_mappings = {
 		},
 		f = {
 			function()
-				vim.lsp.buf.format()
+				vim.lsp.buf.format({
+					filter = function(client)
+						return client.name ~= "tsserver" and client.name ~= "eslint"
+					end,
+				})
 			end,
 			"Format",
 		},
@@ -164,7 +170,20 @@ local noremap_mappings = {
 		},
 		j = { "<cmd>Neorg journal today<CR>", "Open Neorg journal" },
 		d = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" },
+		p = {
+			function()
+				require("dbee").open()
+			end,
+			"Start DBee",
+		},
 		c = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
+	},
+	n = {
+		name = "Neorg",
+		n = {
+			"<cmd>Telescope neorg switch_workspace<CR>",
+			"switch workspace",
+		},
 	},
 }
 
@@ -231,8 +250,8 @@ local remap_mappings = {
 		},
 		q = {
 			function()
-				dap.disconnect({ restart = false, terminateDebuggee = true })
-                dap.close()
+				dap.disconnect()
+				dapui.close()
 			end,
 			"Quit",
 		},

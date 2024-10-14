@@ -28,6 +28,7 @@ cmp.setup({
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" }, -- For luasnip users.
 		{ name = "vim-dadbod-completion" }, -- For luasnip users.
+		{ name = "cmp-dbee" },
 		{ name = "path" }, -- For luasnip users.
 		{ name = "neorg" },
 	}),
@@ -40,6 +41,7 @@ cmp.setup({
 				luasnip = "[Luasnip]",
 				nvim_lua = "[Nvim_Lua]",
 				["vim-dadbod-completion"] = "[dadbod]",
+				["cmp-dbee"] = "[cmp-dbee]",
 			},
 		}),
 	},
@@ -62,10 +64,10 @@ require("lsp_signature").setup()
 local on_attach = function(client, bufnr)
 	vim.diagnostic.config({
 		virtual_text = {
-			source = "always",
+			source = true,
 		},
 		float = {
-			source = "always",
+			source = true,
 		},
 	})
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -81,13 +83,6 @@ local on_attach = function(client, bufnr)
 
 	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
 	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("n", "<space>f", function()
-		vim.lsp.buf.format({
-			filter = function(client)
-				return client.name ~= "tsserver"
-			end,
-		})
-	end, bufopts)
 
 	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
 	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
@@ -135,7 +130,8 @@ mason_lspconfig.setup_handlers({
 			on_attach = on_attach,
 			settings = lsp_server_settings[server_name],
 		})
-
+	end,
+	["html"] = function()
 		require("lspconfig")["html"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
@@ -148,7 +144,8 @@ mason_lspconfig.setup_handlers({
 				provideFormatter = false,
 			},
 		})
-
+	end,
+	["angularls"] = function()
 		local cmd = {
 			"ngserver",
 			"--tsProbeLocations",

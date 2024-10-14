@@ -8,6 +8,9 @@ require("neorg").setup({
 				default_workspace = "home",
 				workspaces = {
 					home = "~/Documents/Notes/",
+					example_gtd = "~/Documents/Code/personal",
+					uphabit = "~/Documents/Code/uphabit/notes",
+					clinook = "~/Documents/Code/clinook_new/notes",
 				},
 			},
 		},

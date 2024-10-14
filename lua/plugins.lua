@@ -23,8 +23,14 @@ require("lazy").setup({
 	"tpope/vim-surround",
 	"tpope/vim-commentary",
 	"tpope/vim-fugitive",
-	"folke/which-key.nvim",
 	"L3MON4D3/LuaSnip",
+	{
+
+		"folke/which-key.nvim",
+		dependencies = {
+			"echasnovski/mini.icons",
+		},
+	},
 	{
 		-- for neorg vim
 		"vhyrro/luarocks.nvim",
@@ -70,6 +76,9 @@ require("lazy").setup({
 	{
 		"nvim-neorg/neorg",
 		dependencies = "luarocks.nvim",
+	},
+	{
+		"nvim-neorg/neorg-telescope",
 	},
 	{
 		"kyazdani42/nvim-web-devicons",
@@ -137,7 +146,19 @@ require("lazy").setup({
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"hrsh7th/nvim-cmp",
+			{
+				"hrsh7th/nvim-cmp",
+				dependencies = {
+					{
+						"MattiasMTS/cmp-dbee",
+						dependencies = {
+							{ "kndndrj/nvim-dbee" },
+						},
+						ft = "sql", -- optional but good to have
+						opts = {}, -- needed
+					},
+				},
+			},
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-path",
@@ -167,7 +188,6 @@ require("lazy").setup({
 			require("telescope").setup({
 				defaults = {
 					layout_strategy = "flex",
-					path_display = { "shorten" },
 					mappings = {
 						i = {
 							["<Esc>"] = telescopeActions.close,
@@ -208,9 +228,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		"jidn/vim-dbml",
-	},
-	{
 		"digitaltoad/vim-pug",
 	},
 	{
@@ -219,4 +236,35 @@ require("lazy").setup({
 			require("nvim-ts-autotag").setup()
 		end,
 	},
+	{
+		"kndndrj/nvim-dbee",
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+		},
+		build = function()
+			-- Install tries to automatically detect the install method.
+			-- if it fails, try calling it with one of these parameters:
+			--    "curl", "wget", "bitsadmin", "go"
+			require("dbee").install()
+		end,
+		config = function()
+			require("dbee").setup({
+				sources = {
+					require("dbee.sources").MemorySource:new({
+						{
+							name = "Uphabit Prod RO",
+							type = "postgres", -- type of database driver
+							url = "postgresql://arshad:qasda3412!234@localhost:5431/uphabit_prod",
+						},
+						{
+							name = "local uphabit Postgres",
+							type = "postgres", -- type of database driver
+							url = "postgresql://postgres:postgres@localhost:5432/cc_dev",
+						},
+					}),
+				},
+			})
+		end,
+	},
+	"prisma/vim-prisma",
 })

@@ -26,4 +26,3 @@ opt.wrap = false -- display lines as one long line
 opt.scrolloff = 5
 opt.sidescrolloff = 5
 opt.colorcolumn = "80"
-
