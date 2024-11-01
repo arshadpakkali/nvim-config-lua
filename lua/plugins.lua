@@ -261,10 +261,45 @@ require("lazy").setup({
 							type = "postgres", -- type of database driver
 							url = "postgresql://postgres:postgres@localhost:5432/cc_dev",
 						},
+						{
+							name = "Staging uphabit Postgres",
+							type = "postgres", -- type of database driver
+							url = "postgresql://uphabit:CFGElIIvgwOnSpm4N7gv@localhost:5430/uphabit_development?sslmode=disable",
+						},
 					}),
 				},
 			})
 		end,
 	},
 	"prisma/vim-prisma",
+	{
+		"stevearc/conform.nvim",
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				python = { "black" },
+				rust = { "rustfmt", lsp_format = "fallback" },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+			},
+		},
+	},
+
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			require("lint").linters_by_ft = {
+				typescript = { "eslint_d" },
+				typescriptreact = { "eslint_d" },
+			}
+			vim.api.nvim_create_autocmd({ "TextChanged", "BufWritePost", "InsertLeave" }, {
+				callback = function()
+					-- try_lint without arguments runs the linters defined in `linters_by_ft`
+					-- for the current filetype
+					require("lint").try_lint()
+				end,
+			})
+		end,
+	},
 })

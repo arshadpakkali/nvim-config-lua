@@ -87,11 +87,9 @@ local noremap_mappings = {
 		},
 		f = {
 			function()
-				vim.lsp.buf.format({
-					filter = function(client)
-						return client.name ~= "tsserver" and client.name ~= "eslint"
-					end,
-				})
+				require("conform").format({
+                    lsp_format = "fallback"
+                })
 			end,
 			"Format",
 		},
