@@ -29,7 +29,8 @@ cmp.setup({
 		{ name = "vim-dadbod-completion" }, -- For luasnip users.
 		{ name = "cmp-dbee" },
 		{ name = "path" }, -- For luasnip users.
-		{ name = "neorg" },
+		{ name = "orgmode" },
+		{ name = "calc" },
 	}),
 	formatting = {
 		format = require("lspkind").cmp_format({
@@ -140,7 +141,7 @@ mason_lspconfig.setup_handlers({
 					css = true,
 					javascript = true,
 				},
-				provideFormatter = false,
+				provideFormatter = true,
 			},
 		})
 	end,

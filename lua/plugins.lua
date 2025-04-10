@@ -18,24 +18,20 @@ require("lazy").setup({
 	"unblevable/quick-scope",
 	"norcalli/nvim-colorizer.lua",
 	"mattn/emmet-vim",
-	-- "github/copilot.vim",
 	"kdheepak/lazygit.nvim",
 	"tpope/vim-surround",
-	"tpope/vim-commentary",
 	"tpope/vim-fugitive",
 	"L3MON4D3/LuaSnip",
+	{
+		"numToStr/Comment.nvim",
+		opts = {},
+	},
 	{
 
 		"folke/which-key.nvim",
 		dependencies = {
 			"echasnovski/mini.icons",
 		},
-	},
-	{
-		-- for neorg vim
-		"vhyrro/luarocks.nvim",
-		priority = 1000,
-		config = true,
 	},
 	{
 		"kristijanhusak/vim-dadbod-ui",
@@ -74,11 +70,42 @@ require("lazy").setup({
 		},
 	},
 	{
-		"nvim-neorg/neorg",
-		dependencies = "luarocks.nvim",
-	},
-	{
-		"nvim-neorg/neorg-telescope",
+		"nvim-orgmode/orgmode",
+		event = "VeryLazy",
+		ft = { "org" },
+		config = function()
+			-- Setup orgmode
+			require("orgmode").setup({
+				org_agenda_span = "day",
+				org_agenda_files = { "~/Sync/**/*" },
+				org_default_notes_file = "~/Sync/Tasks/refile.org",
+				org_todo_keyword_faces = {
+					TODO = ":background #000000 :foreground #F28B82 :weight bold :underline on", -- overrides builtin color for `TODO` keyword
+					CANCELLED = ":background #000000 :foreground #6C757D :weight bold", -- overrides builtin color for `TODO` keyword
+				},
+				org_todo_keywords = { "TODO(t)", "|", "DONE(d)", "CANCELLED(c)" },
+				org_capture_templates = {
+					i = {
+						description = "new Task (Inbox)",
+						template = "* TODO %?\n:PROPERTIES:\n :CREATED: %u \n:END:",
+					},
+					t = {
+						description = "new Task (Today)",
+						template = "* TODO %?\n SCHEDULED: %t\n:PROPERTIES:\n :CREATED: %u \n:END:",
+					},
+					w = {
+						description = "new Work Task (Today)",
+						template = "* TODO %?\n:PROPERTIES:\n :CREATED: %u \n:END:",
+						target = "/home/arshad/Sync/Tasks/work.org",
+					},
+					j = {
+						description = "new Journal entry",
+						target = "/home/arshad/Sync/journal/journal.org",
+						datetree = { reversed = true },
+					},
+				},
+			})
+		end,
 	},
 	{
 		"kyazdani42/nvim-web-devicons",
@@ -162,6 +189,7 @@ require("lazy").setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-nvim-lua",
 			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-calc",
 			"saadparwaiz1/cmp_luasnip",
 			"jose-elias-alvarez/null-ls.nvim",
 			"ray-x/lsp_signature.nvim",
@@ -259,7 +287,7 @@ require("lazy").setup({
 						{
 							name = "local uphabit Postgres",
 							type = "postgres", -- type of database driver
-							url = "postgresql://postgres:postgres@localhost:5432/cc_dev",
+							url = "postgresql://postgres:postgres@localhost:5432/uh_prod_copy",
 						},
 						{
 							name = "Staging uphabit Postgres",
@@ -282,6 +310,8 @@ require("lazy").setup({
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 				typescript = { "prettierd", "prettier", stop_after_first = true },
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				json = { "prettierd", "prettier", stop_after_first = true },
+				json5 = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
@@ -298,6 +328,19 @@ require("lazy").setup({
 					-- try_lint without arguments runs the linters defined in `linters_by_ft`
 					-- for the current filetype
 					require("lint").try_lint()
+				end,
+			})
+		end,
+	},
+	{
+		"stevearc/aerial.nvim",
+		config = function()
+			require("aerial").setup({
+				-- optionally use on_attach to set keymaps when aerial has attached to a buffer
+				on_attach = function(bufnr)
+					-- Jump forwards/backwards with '{' and '}'
+					vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+					vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
 				end,
 			})
 		end,

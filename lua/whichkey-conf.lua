@@ -88,8 +88,8 @@ local noremap_mappings = {
 		f = {
 			function()
 				require("conform").format({
-                    lsp_format = "fallback"
-                })
+					lsp_format = "fallback",
+				})
 			end,
 			"Format",
 		},
@@ -166,7 +166,6 @@ local noremap_mappings = {
 			end,
 			"Open Quickfix",
 		},
-		j = { "<cmd>Neorg journal today<CR>", "Open Neorg journal" },
 		d = { "<cmd>DBUIToggle<CR>", "Toggle DBUI" },
 		p = {
 			function()
@@ -175,13 +174,6 @@ local noremap_mappings = {
 			"Start DBee",
 		},
 		c = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
-	},
-	n = {
-		name = "Neorg",
-		n = {
-			"<cmd>Telescope neorg switch_workspace<CR>",
-			"switch workspace",
-		},
 	},
 }
 
