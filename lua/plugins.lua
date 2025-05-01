@@ -1,20 +1,21 @@
-local fn = vim.fn
-
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+	if vim.v.shell_error ~= 0 then
+		vim.api.nvim_echo({
+			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+			{ out, "WarningMsg" },
+			{ "\nPress any key to exit..." },
+		}, true, {})
+		vim.fn.getchar()
+		os.exit(1)
+	end
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"lewis6991/impatient.nvim",
 	"unblevable/quick-scope",
 	"norcalli/nvim-colorizer.lua",
 	"mattn/emmet-vim",
@@ -77,8 +78,8 @@ require("lazy").setup({
 			-- Setup orgmode
 			require("orgmode").setup({
 				org_agenda_span = "day",
-				org_agenda_files = { "~/Sync/**/*" },
-				org_default_notes_file = "~/Sync/Tasks/refile.org",
+				org_agenda_files = { "~/Documents/orgfiles/**/*" },
+				org_default_notes_file = "~/Documents/orgfiles/refile.org",
 				org_todo_keyword_faces = {
 					TODO = ":background #000000 :foreground #F28B82 :weight bold :underline on", -- overrides builtin color for `TODO` keyword
 					CANCELLED = ":background #000000 :foreground #6C757D :weight bold", -- overrides builtin color for `TODO` keyword
@@ -96,11 +97,11 @@ require("lazy").setup({
 					w = {
 						description = "new Work Task (Today)",
 						template = "* TODO %?\n:PROPERTIES:\n :CREATED: %u \n:END:",
-						target = "/home/arshad/Sync/Tasks/work.org",
+						target = "~/Documents/orgfiles/work.org",
 					},
 					j = {
 						description = "new Journal entry",
-						target = "/home/arshad/Sync/journal/journal.org",
+						target = "~/Documents/orgfiles/journal.org",
 						datetree = { reversed = true },
 					},
 				},
@@ -167,6 +168,7 @@ require("lazy").setup({
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				automatic_installation = true,
+				ensure_installed = { "" },
 			})
 		end,
 	},
@@ -182,7 +184,13 @@ require("lazy").setup({
 							{ "kndndrj/nvim-dbee" },
 						},
 						ft = "sql", -- optional but good to have
-						opts = {}, -- needed
+						opts = function(_, opts)
+							opts.sources = opts.sources or {}
+							table.insert(opts.sources, {
+								name = "lazydev",
+								group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+							})
+						end,
 					},
 				},
 			},
@@ -204,7 +212,6 @@ require("lazy").setup({
 		tag = "0.1.4",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope-fzf-native.nvim",
 			{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
 			{
 				"prochri/telescope-all-recent.nvim",
@@ -224,7 +231,6 @@ require("lazy").setup({
 					},
 				},
 			})
-			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("frecency")
 			require("telescope-all-recent").setup({})
 		end,
@@ -312,6 +318,7 @@ require("lazy").setup({
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 				json = { "prettierd", "prettier", stop_after_first = true },
 				json5 = { "prettierd", "prettier", stop_after_first = true },
+				sql = { "sqlfmt" },
 			},
 		},
 	},
@@ -322,6 +329,7 @@ require("lazy").setup({
 			require("lint").linters_by_ft = {
 				typescript = { "eslint_d" },
 				typescriptreact = { "eslint_d" },
+				javascript = { "eslint_d" },
 			}
 			vim.api.nvim_create_autocmd({ "TextChanged", "BufWritePost", "InsertLeave" }, {
 				callback = function()
@@ -333,16 +341,14 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"stevearc/aerial.nvim",
-		config = function()
-			require("aerial").setup({
-				-- optionally use on_attach to set keymaps when aerial has attached to a buffer
-				on_attach = function(bufnr)
-					-- Jump forwards/backwards with '{' and '}'
-					vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-					vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
-				end,
-			})
-		end,
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+			},
+		},
 	},
 })

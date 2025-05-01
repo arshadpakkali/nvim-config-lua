@@ -1,5 +1,4 @@
-local which_key = require("which-key")
-local telescope = require("telescope")
+local wk = require("which-key")
 local telescope_builtin = require("telescope.builtin")
 local dap = require("dap")
 local dapui = require("dapui")
@@ -322,6 +321,6 @@ local remap_mappings = {
 	},
 }
 
-which_key.setup()
-which_key.register(noremap_mappings, noremap_opts)
-which_key.register(remap_mappings, remap_opts)
+wk.setup()
+wk.register(noremap_mappings, noremap_opts)
+wk.register(remap_mappings, remap_opts)

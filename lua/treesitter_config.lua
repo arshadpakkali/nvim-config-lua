@@ -5,7 +5,7 @@ require("nvim-treesitter.configs").setup({
 		"python",
 		"rust",
 		"typescript",
-		"help",
+		"vimdoc",
 		"norg",
 		"javascript",
 		"tsx",
@@ -16,12 +16,6 @@ require("nvim-treesitter.configs").setup({
 	indent = { enable = true },
 	incremental_selection = {
 		enable = false,
-		keymaps = {
-			init_selection = "<c-space>",
-			node_incremental = "<c-space>",
-			scope_incremental = "<c-s>",
-			node_decremental = "<c-backspace>",
-		},
 	},
 	textobjects = {
 		select = {

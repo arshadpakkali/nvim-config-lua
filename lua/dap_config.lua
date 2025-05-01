@@ -34,6 +34,17 @@ dap.adapters.firefox_debug = {
 	command = "firefox-debug-adapter",
 }
 
+dap.adapters["pwa-node"] = {
+	type = "server",
+	host = "localhost",
+	port = "${port}",
+	executable = {
+		command = "js-debug-adapter",
+		-- 💀 Make sure to update this path to point to your installation
+		args = { "${port}" },
+	},
+}
+
 -- for _, language in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
 -- 	dap.configurations[language] = {
 -- 		{
