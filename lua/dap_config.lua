@@ -57,6 +57,12 @@ dap.adapters["pwa-node"] = {
 -- 	}
 -- end
 
+dap.adapters.coreclr = {
+	type = "executable",
+	command = "netcoredbg",
+	args = { "--interpreter=vscode" },
+}
+
 local dapui = require("dapui")
 
 dap.listeners.before.attach.dapui_config = function()

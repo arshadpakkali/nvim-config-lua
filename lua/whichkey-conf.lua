@@ -42,7 +42,7 @@ local noremap_mappings = {
 		name = "Plugins",
 		s = {
 			function()
-				require("lazy").sync()
+				require("lazy").home()
 			end,
 			"Sync",
 		},
@@ -173,6 +173,15 @@ local noremap_mappings = {
 			"Start DBee",
 		},
 		c = { "<cmd>ColorizerToggle<CR>", "Toggle Colorizer" },
+	},
+	["o"] = {
+		j = {
+			function()
+				vim.cmd("edit ~/Documents/orgfiles/journal.org")
+				vim.fn.search([[\*\*\*]])
+			end,
+			"open journal latest entry",
+		},
 	},
 }
 
