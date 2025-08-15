@@ -62,122 +62,33 @@ require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
 require("lsp_signature").setup()
 
 local on_attach = function(client, bufnr)
-	vim.diagnostic.config({
-		virtual_text = {
-			source = true,
-		},
-		float = {
-			source = true,
-		},
-	})
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set("n", "gr", function()
-		telescope.lsp_references({ include_declaration = false })
-	end, bufopts)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-	vim.keymap.set("n", "<A-k>", vim.lsp.buf.signature_help, bufopts)
-
-	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-	vim.keymap.set("n", "<space>ca", vim.lsp.buf.code_action, bufopts)
-
-	vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set("n", "<space>wl", function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-
-	vim.keymap.set("n", "<space>qf", vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, bufopts)
-
-	vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, bufopts)
-
-	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
-	end, bufopts)
-	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
-	end, bufopts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-local lsp_server_settings = {
-	jsonls = {
+vim.lsp.config("jsonls", {
+	settings = {
 		json = {
 			schemas = require("schemastore").json.schemas(),
 			validate = { enable = true },
 		},
 	},
-	yamlls = {
+})
+vim.lsp.config("yamlls", {
+	settings = {
 		yaml = {
 			schemas = require("schemastore").json.schemas(),
 			validate = { enable = true },
 		},
 	},
-}
-
-local mason_lspconfig = require("mason-lspconfig")
-
-mason_lspconfig.setup_handlers({
-	function(server_name)
-		require("lspconfig")[server_name].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = lsp_server_settings[server_name],
-		})
-	end,
-	["html"] = function()
-		require("lspconfig")["html"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			init_options = {
-				configurationSection = { "html", "css", "javascript" },
-				embeddedLanguages = {
-					css = true,
-					javascript = true,
-				},
-				provideFormatter = true,
-			},
-		})
-	end,
-	["angularls"] = function()
-		local cmd = {
-			"ngserver",
-			"--tsProbeLocations",
-			"/home/arshad/.local/lib/node_modules/lib/",
-			"--ngProbeLocations",
-			"/home/arshad/.local/lib/node_modules/lib",
-			"--stdio",
-		}
-		require("lspconfig")["angularls"].setup({
-			cmd = cmd,
-			on_new_config = function(new_config, new_root_dir)
-				new_config.cmd = cmd
-			end,
-			capabilities = capabilities,
-			on_attach = on_attach,
-		})
-	end,
 })
 
--- local null_ls = require("null-ls")
---
--- null_ls.setup({
--- 	sources = {
--- 		null_ls.builtins.formatting.stylua,
--- 		null_ls.builtins.formatting.shfmt,
--- 		null_ls.builtins.formatting.black,
--- 		-- null_ls.builtins.formatting.sqlfmt,
--- 		-- null_ls.builtins.formatting.sqlfluff.with({
--- 		--     extra_args = { "--dialect", "postgres" },
--- 		-- }),
--- 		null_ls.builtins.formatting.sql_formatter.with({ extra_args = { "-l", "postgresql" } }),
--- 		null_ls.builtins.diagnostics.shellcheck,
--- 		null_ls.builtins.code_actions.shellcheck,
--- 	},
--- })
+vim.diagnostic.config({
+	virtual_text = true,
+})
+vim.lsp.config("roslyn", {
+	capabilities = capabilities,
+	on_attach = on_attach,
+})

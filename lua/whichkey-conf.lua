@@ -321,14 +321,40 @@ local remap_mappings = {
 			end,
 			"Inspect",
 		},
-		["I"] = {
-			function()
-				require("dap.ui.widgets").preview()
-			end,
-			"Inspect",
-		},
 	},
 }
+
+vim.keymap.set("n", "<leader>cf", function()
+	-- Create a new scratch buffer
+	local buf = vim.api.nvim_create_buf(false, true) -- unlisted, scratch
+	local win = vim.api.nvim_open_win(buf, true, {})
+
+	-- Stream ls -la output to the buffer
+	local lines = {}
+	vim.system({ "dotnet", "build" }, {
+		stdout = function(err, data)
+			if err then
+				return
+			end
+			if data then
+				for line in data:gmatch("[^\r\n]+") do
+					table.insert(lines, line)
+					vim.schedule(function()
+						vim.api.nvim_buf_set_lines(buf, -1, -1, false, { line })
+					end)
+				end
+			end
+		end,
+		stderr = function(_, data)
+			-- optional: display errors
+			if data then
+				vim.schedule(function()
+					vim.api.nvim_buf_set_lines(buf, -1, -1, false, { "ERR: " .. data })
+				end)
+			end
+		end,
+	})
+end, { desc = "Run ls -la and stream output to a floating window" })
 
 wk.setup()
 wk.register(noremap_mappings, noremap_opts)

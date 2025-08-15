@@ -54,7 +54,7 @@ require("lazy").setup({
 	{
 		"ellisonleao/gruvbox.nvim",
 		config = function()
-			require("gruvbox").setup({ contrast = "hard" })
+			require("gruvbox").setup({ terminal_colors = true, contrast = "hard" })
 			vim.cmd("let g:gruvbox_transparent_bg = 1")
 			vim.cmd("autocmd VimEnter * hi Normal ctermbg=NONE guibg=NONE")
 			vim.cmd("colorscheme gruvbox")
@@ -74,17 +74,21 @@ require("lazy").setup({
 		"nvim-orgmode/orgmode",
 		event = "VeryLazy",
 		ft = { "org" },
+		dependencies = {
+			"akinsho/org-bullets.nvim",
+		},
 		config = function()
 			-- Setup orgmode
 			require("orgmode").setup({
 				org_agenda_span = "day",
 				org_agenda_files = { "~/Documents/orgfiles/**/*" },
 				org_default_notes_file = "~/Documents/orgfiles/refile.org",
+				org_agenda_skip_scheduled_if_done = true,
 				org_todo_keyword_faces = {
 					TODO = ":background #000000 :foreground #F28B82 :weight bold :underline on", -- overrides builtin color for `TODO` keyword
 					CANCELLED = ":background #000000 :foreground #6C757D :weight bold", -- overrides builtin color for `TODO` keyword
 				},
-				org_todo_keywords = { "TODO(t)", "|", "DONE(d)", "CANCELLED(c)" },
+				org_todo_keywords = { "TODO(t)", "WAITING(w)", "|", "DONE(d)", "CANCELLED(c)" },
 				org_capture_templates = {
 					i = {
 						description = "new Task (Inbox)",
@@ -96,7 +100,7 @@ require("lazy").setup({
 					},
 					w = {
 						description = "new Work Task (Today)",
-						template = "* TODO %?\n:PROPERTIES:\n :CREATED: %u \n:END:",
+						template = "* TODO %?  :work:\n SCHEDULED: %t\n:PROPERTIES:\n :CREATED: %u \n:END:",
 						target = "~/Documents/orgfiles/work.org",
 					},
 					j = {
@@ -105,7 +109,20 @@ require("lazy").setup({
 						datetree = { reversed = true },
 					},
 				},
+				org_agenda_custom_commands = {
+					w = {
+						description = "Work Items",
+						types = {
+							{
+								type = "agenda",
+								org_agenda_tag_filter_preset = "work",
+								org_agenda_overriding_header = "All work items",
+							},
+						},
+					},
+				},
 			})
+			require("org-bullets").setup()
 		end,
 	},
 	{
@@ -165,7 +182,12 @@ require("lazy").setup({
 			"williamboman/mason.nvim",
 		},
 		config = function()
-			require("mason").setup()
+			require("mason").setup({
+				registries = {
+					"github:mason-org/mason-registry",
+					"github:Crashdummyy/mason-registry",
+				},
+			})
 			require("mason-lspconfig").setup({
 				automatic_installation = true,
 				ensure_installed = { "" },
@@ -262,9 +284,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		"digitaltoad/vim-pug",
-	},
-	{
 		"windwp/nvim-ts-autotag",
 		config = function()
 			require("nvim-ts-autotag").setup()
@@ -284,23 +303,7 @@ require("lazy").setup({
 		config = function()
 			require("dbee").setup({
 				sources = {
-					require("dbee.sources").MemorySource:new({
-						{
-							name = "Uphabit Prod RO",
-							type = "postgres", -- type of database driver
-							url = "postgresql://arshad:qasda3412!234@localhost:5431/uphabit_prod",
-						},
-						{
-							name = "local uphabit Postgres",
-							type = "postgres", -- type of database driver
-							url = "postgresql://postgres:postgres@localhost:5432/uh_prod_copy",
-						},
-						{
-							name = "Staging uphabit Postgres",
-							type = "postgres", -- type of database driver
-							url = "postgresql://uphabit:CFGElIIvgwOnSpm4N7gv@localhost:5430/uphabit_development?sslmode=disable",
-						},
-					}),
+					require("dbee.sources").MemorySource:new({}),
 				},
 			})
 		end,
@@ -318,7 +321,17 @@ require("lazy").setup({
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 				json = { "prettierd", "prettier", stop_after_first = true },
 				json5 = { "prettierd", "prettier", stop_after_first = true },
+				yaml = { "prettierd", "prettier", stop_after_first = true },
 				sql = { "sqlfmt" },
+				sh = { "shfmt" },
+				cs = { "csharpier" },
+			},
+			formatters = {
+				["csharpier"] = {
+					command = "csharpier",
+					args = { "format", "--write-stdout" },
+					stdin = true,
+				},
 			},
 		},
 	},
@@ -350,5 +363,83 @@ require("lazy").setup({
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
+	},
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+		opts = {},
+	},
+	{
+		"seblyng/roslyn.nvim",
+		ft = { "cs", "razor" },
+		dependencies = {
+			{
+				"tris203/rzls.nvim",
+				config = true,
+			},
+		},
+		---@module 'roslyn.config'
+		---@type RoslynNvimConfig
+		opts = {
+			-- your configuration comes here; leave empty for default settings
+		},
+
+		config = function()
+			local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
+			local cmd = {
+				"roslyn",
+				"--stdio",
+				"--logLevel=Information",
+				"--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+				"--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"),
+				"--razorDesignTimePath="
+					.. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"),
+				"--extension",
+				vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
+			}
+
+			vim.lsp.config("roslyn", {
+				cmd = cmd,
+				handlers = require("rzls.roslyn_handlers"),
+				settings = {
+					["csharp|inlay_hints"] = {
+						csharp_enable_inlay_hints_for_implicit_object_creation = true,
+						csharp_enable_inlay_hints_for_implicit_variable_types = true,
+
+						csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+						csharp_enable_inlay_hints_for_types = true,
+						dotnet_enable_inlay_hints_for_indexer_parameters = true,
+						dotnet_enable_inlay_hints_for_literal_parameters = true,
+						dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+						dotnet_enable_inlay_hints_for_other_parameters = true,
+						dotnet_enable_inlay_hints_for_parameters = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+						dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+					},
+					["csharp|code_lens"] = {
+						dotnet_enable_references_code_lens = true,
+					},
+				},
+			})
+			vim.lsp.enable("roslyn")
+		end,
+		init = function()
+			-- We add the Razor file types before the plugin loads.
+			vim.filetype.add({
+				extension = {
+					razor = "razor",
+					cshtml = "razor",
+				},
+			})
+		end,
+	},
+	{
+		"ibhagwan/fzf-lua",
+		-- optional for icon support
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		-- or if using mini.icons/mini.nvim
+		-- dependencies = { "echasnovski/mini.icons" },
+		opts = {},
 	},
 })
